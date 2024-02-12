@@ -84,6 +84,8 @@ console.log(convertMs(24140000)); // {days: 0, hours: 6 minutes: 42, seconds: 20
 
 /* 
 
+//ChatGPT
+
 <script>
     // Set the target date for the countdown (replace with your desired date)
     const targetDate = new Date("2024-01-01T00:00:00Z").getTime();
