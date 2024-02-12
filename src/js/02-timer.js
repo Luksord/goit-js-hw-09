@@ -85,6 +85,106 @@ console.log(convertMs(24140000)); // {days: 0, hours: 6 minutes: 42, seconds: 20
 
 /* 
 
+Zadanie 2 - Odliczanie czasu
+Wykonaj to zadanie w plikach 02-timer.html i 02-timer.js. Napisz skrypt licznika, który odlicza czas do określonego zdarzenia. 
+Taki licznik można wykorzystywać na blogach czy w sklepach internetowych, stronach z różnymi wydarzeniami, podczas przerwy technicznej itd. 
+
+Elementy interfejsu
+W HTML znajduje się znacznik licznika, pola wyboru końcowej daty i przycisku, po którego kliknięciu licznik powinien się uruchomić.
+
+Popraw wizualnie elementy interfejsu.
+
+<input type="text" id="datetime-picker" />
+<button type="button" data-start>Start</button>
+
+<div class="timer">
+  <div class="field">
+    <span class="value" data-days>00</span>
+    <span class="label">Days</span>
+  </div>
+  <div class="field">
+    <span class="value" data-hours>00</span>
+    <span class="label">Hours</span>
+  </div>
+  <div class="field">
+    <span class="value" data-minutes>00</span>
+    <span class="label">Minutes</span>
+  </div>
+  <div class="field">
+    <span class="value" data-seconds>00</span>
+    <span class="label">Seconds</span>
+  </div>
+</div>
+
+Biblioteka flatpickr:
+Używaj biblioteki flatpickr po to, aby pozwolić użytkownikowi wybrać ostateczną datę i godzinę w takim samym formularzu niezależnie 
+od przeglądarki. Aby dodać kod CSS biblioteki z projektem, należy dodać jeszcze jeden import, oprócz tego opisanego w dokumentacji.
+
+// Opisany w dokumentacji
+import flatpickr from "flatpickr";
+// Dodatkowy import stylów
+import "flatpickr/dist/flatpickr.min.css";
+
+Biblioteka czeka na jej inicjalizację na elemencie input[type="text"], dlatego dodaliśmy do HTML input#datetime-picker.
+
+<input type="text" id="datetime-picker" />
+
+Drugim argumentem funkcji flatpickr(selector, options) jest nieobowiązkowy obiekt parametrów. Przygotowaliśmy dla Ciebie obiekt, 
+który jest niezbędny do wykonania zadania. Przeczytaj, za co odpowiada każda właściwość w dokumentacji «Options» i użyj ich w swoim kodzie.
+
+const options = {
+  enableTime: true,
+  time_24hr: true,
+  defaultDate: new Date(),
+  minuteIncrement: 1,
+  onClose(selectedDates) {
+    console.log(selectedDates[0]);
+  },
+};
+
+Wybór daty:
+Metoda onClose() z obiektu parametrów pojawia się za każdym razem przy zamknięciu elementu interfejsu, który tworzy flatpickr. 
+To właśnie w niej należy opracować datę wybraną przez użytkownika. Parametr selectedDates to tablica wybranych dat, dlatego 
+bierzemy z niej pierwszy element.
+
+- Jeśli użytkownik wybrał datę z przeszłości, pokaż window.alert() o treści "Please choose a date in the future".
+- Jeśli użytkownik wybrał odpowiednią datę (z przyszłości), przycisk «Start» staje się aktywny.
+- Przycisk «Start» powinien być nieaktywny tak długo, dopóki użytkownik nie wybierze daty w przyszłości.
+- Po kliknięciu przycisku «Start» zaczyna się odliczanie czasu do wybranej daty od momentu kliknięcia.
+
+Odliczanie czasu:
+Po kliknięciu na przycisk «Start» skrypt powinien wyliczać raz na sekundę, ile czasu pozostało do wskazanej daty i aktualizować 
+interfejs licznika, pokazując cztery liczby: dni, godziny, minuty i sekundy, w formacie xx:xx:xx:xx (DD:HH:MM:SS).
+- Liczba dni może składać się z więcej niż dwóch cyfr (jeśli wybierzemy odpowiednio odległą datę).
+- Licznik powinien się zatrzymać, gdy osiągniemy datę końcowej a wartość licznika wyniesie 00:00:00:00.
+
+Aby obliczyć potrzebne wartości użyj gotowej funkcji convertMs, gdzie ms to różnica między końcową i aktualną datą w milisekundach.
+
+function convertMs(ms) {
+// Number of milliseconds per unit of time
+  const second = 1000;
+  const minute = second * 60;
+  const hour = minute * 60;
+  const day = hour * 24;
+
+// Remaining days
+  const days = Math.floor(ms / day);
+// Remaining hours
+  const hours = Math.floor((ms % day) / hour);
+// Remaining minutes
+  const minutes = Math.floor(((ms % day) % hour) / minute);
+// Remaining seconds
+  const seconds = Math.floor((((ms % day) % hour) % minute) / second);
+
+  return { days, hours, minutes, seconds };
+}
+
+console.log(convertMs(2000));// {days: 0, hours: 0, minutes: 0, seconds: 2}
+console.log(convertMs(140000));// {days: 0, hours: 0, minutes: 2, seconds: 20}
+console.log(convertMs(24140000));// {days: 0, hours: 6 minutes: 42, seconds: 20}
+
+//--------------------------------------------------------------------------------------------------
+
 //ChatGPT
 
 <script>
