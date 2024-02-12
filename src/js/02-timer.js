@@ -1,7 +1,8 @@
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
+import Notiflix from 'notiflix';
 
-const dateTimePicker = document.getElementById('datetime-picker');
+const dateTimePicker = document.querySelector('#datetime-picker');
 const startBtn = document.querySelector('[data-start]');
 startBtn.disabled = true;
 
@@ -23,7 +24,7 @@ const options = {
 
 let countdownInterval;
 
-const flatpickr = flatpickr(dateTimePicker, options);
+flatpickr(dateTimePicker, options);
 
 function convertMs(ms) {
   // Number of milliseconds per unit of time
